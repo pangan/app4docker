@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <link rel="SHORTCUT ICON" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/passpoint.css') }}">
+    <title>{{captions['landing']['title']}}</title>
+
+</head>
+<body>
+{% include 'portal_header.html'%}
+<div style="text-align: center;">
+    <br>
+    {{ captions['landing']['detect_message'] }}<br>
+
+     <b>{{ device }}</b> ( {{ os_family }} {{ os_ver }} )<br>
+
+    <!-- supported device block -->
+
+        <br>
+        {{ captions['landing']['enter_uid_message'] }}
+        <br>
+        <br>
+        <form method="POST" id="id_form" action="">
+        {{form.csrf_token}}
+        {% for f_item in form %}
+            {% if  not f_item.id == 'csrf_token' %}
+                {{ f_item.label}} : {{ f_item }}
+                {% for message in f_item.errors %}
+                    <span class="error_message">{{ message }}</span>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        <br>
+        <br>
+        <input type="submit" value="{{ captions['landing']['download_button'] }}" class="blue_button">
+        </form>
+    <!-- end of supported device block -->
+    {% if not supported %}
+
+       <span class="error_message">
+           {{ captions['landing']['not_detect_message'] }}
+       </span>
+   {% endif %}
+</div>
+{% include 'footer.html'%}
+</body>
+</html>
